@@ -1,3 +1,5 @@
+from com.pkrueger.xunit.TestResult import TestResult
+
 __author__ = 'pkrueger'
 
 
@@ -5,6 +7,21 @@ class TestCase:
     def __init__(self, name):
         self.name = name
 
-    def run(self):
-        method = getattr(self, self.name)
-        method()
+    def run(self, result):
+        result.testStarted()
+        result = TestResult()
+        result.testStarted()
+        self.setUp()
+        try:
+            method = getattr(self, self.name)
+            method()
+        except:
+            result.testFailed()
+        self.tearDown()
+        return result
+
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
